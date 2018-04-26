@@ -72,10 +72,8 @@ class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
     
     @objc func didTapCameraView() {
         let settings = AVCapturePhotoSettings() //photo settings with what happens when we request a picture
-        let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first! //'first' is just the general picture type, basic ios photo...can use live photos...etc
-        let previewformat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType, kCVPixelBufferWidthKey as String: 160, kCVPixelBufferHeightKey as String: 160] //dictionary
         
-        settings.previewPhotoFormat = previewformat //pass in our preview format; sets it up for our photo to be previewSized, doesn't need to be full 1920 x 1080 size
+        settings.previewPhotoFormat = settings.embeddedThumbnailPhotoFormat // sets it up for our photo to be previewSized, doesn't need to be full 1920 x 1080 size; thumbnail size
         
         cameraOutput.capturePhoto(with: settings, delegate: self) //it captures the image with settings and its own delegate
         
