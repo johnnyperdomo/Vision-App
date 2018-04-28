@@ -8,6 +8,8 @@
 
 import UIKit
 import AVFoundation //lets us access camera, can process audio...
+import CoreML //handles overall machine learning stuff
+import Vision //handles things like face/object recognition
 
 class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
 
@@ -76,9 +78,27 @@ class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
         settings.previewPhotoFormat = settings.embeddedThumbnailPhotoFormat // sets it up for our photo to be previewSized, doesn't need to be full 1920 x 1080 size; thumbnail size
         
         cameraOutput.capturePhoto(with: settings, delegate: self) //it captures the image with settings and its own delegate
-        
-        
+
     }
+
+    func resultsMethod(request: VNRequest, error: Error?) { //function to control what happens when we receive the results we requested from the model
+        guard let results = request.results as? [VNClassificationObservation] else { return } //place to store results that are returned; "VNClassificationObservation" observes what was in the image
+        
+        for classification in results { //loop through the classifications and pick the most accurate one to our image
+            print(classification.identifier)
+            if classification.confidence < 0.1 { //if the confidence is less than %50
+                self.identificationLbl.text = "I'm not sure what this is. Please try again." //if not confident
+                self.confidenceLbl.text = "" //doesn't show anything
+                break //so it leaves the for loop
+            } else { //if confidence is more than 50%
+                self.identificationLbl.text = classification.identifier //identifier is what it thinks it saw
+                self.confidenceLbl.text = "CONFIDENCE: \(Int(classification.confidence * 100))%" //.confidence shows the percentage; Int for the number to be a whole number
+                break
+            }
+        }
+    }
+    
+    
     
     //delegate avcapture conforms to
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
@@ -88,16 +108,20 @@ class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
         } else { //if everything works smoothly
             photoData = photo.fileDataRepresentation() //returns data, getting photo data and were saving it in 'photoData' variable
             
+            do { //throws errors
+                let model = try VNCoreMLModel(for: SqueezeNet().model) //we pass in an ml model: 'squeezenet', and pull out the model with .model; passing it through vision //model is like the brain
+                let request = VNCoreMLRequest(model: model, completionHandler: resultsMethod) //we need to make a request...kind of like a mental thought...we dont need to input parameters, it already has a request and error
+                let handler = VNImageRequestHandler(data: photoData!) //handles image requests; it handles our photoData we pass into it
+                try handler.perform([request]) //handler performs the request, compares 'photoData' to request, and gives us back data
+            } catch {
+                debugPrint(error)
+            }
+            
+            
             let image = UIImage(data: photoData!) //create an image using the photoData
             self.captureImageView.image = image //convert data we get from our camera, and we pass it into our camera view
         }
     }
-    
-    
-    
-    
-    
-    
     
     
 }
