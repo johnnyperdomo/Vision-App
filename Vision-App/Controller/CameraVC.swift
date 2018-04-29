@@ -16,7 +16,7 @@ enum FlashState { //state of the flashlight
     case on
 }
 
-class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
+class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate, AVSpeechSynthesizerDelegate {
 
     var captureSession: AVCaptureSession! //control our real time capture of the camera
     var cameraOutput: AVCapturePhotoOutput! //capture a still image from an AVCapture session
@@ -26,21 +26,25 @@ class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
     
     var flashControlState: FlashState = .off //off by default
     
+    var speechSynthesizer = AVSpeechSynthesizer() //app reads speech outlet from text
+    
     @IBOutlet weak var cameraView: UIView!
     @IBOutlet weak var captureImageView: RoundedShadowImageView!
     @IBOutlet weak var flashBtn: RoundedShadowButton!
     @IBOutlet weak var identificationLbl: UILabel!
     @IBOutlet weak var confidenceLbl: UILabel!
     @IBOutlet weak var RoundedLblView: RoundedShadowView!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         previewLayer.frame = cameraView.bounds //puts a camera view into our background view , cand conforms it to the bounds of the view
+        speechSynthesizer.delegate = self
+        spinner.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,6 +84,10 @@ class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
     }
     
     @objc func didTapCameraView() {
+        self.cameraView.isUserInteractionEnabled = false //when we tap to take a photo, disable it so we can't do it again
+        self.spinner.isHidden = false //spinner shows
+        self.spinner.startAnimating()
+        
         let settings = AVCapturePhotoSettings() //photo settings with what happens when we request a picture
         
         settings.previewPhotoFormat = settings.embeddedThumbnailPhotoFormat // sets it up for our photo to be previewSized, doesn't need to be full 1920 x 1080 size; thumbnail size
@@ -99,19 +107,28 @@ class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
         
         for classification in results { //loop through the classifications and pick the most accurate one to our image
             print(classification.identifier)
-            if classification.confidence < 0.1 { //if the confidence is less than %50
-                self.identificationLbl.text = "I'm not sure what this is. Please try again." //if not confident
+            if classification.confidence < 0.5 { //if the confidence is less than %50
+                let unknownObjectMessage = "I'm not sure what this is. Please try again."
+                self.identificationLbl.text = unknownObjectMessage //if not confident
+                synthesizeSpeech(fromString: unknownObjectMessage) //app reads this
                 self.confidenceLbl.text = "" //doesn't show anything
                 break //so it leaves the for loop
             } else { //if confidence is more than 50%
-                self.identificationLbl.text = classification.identifier //identifier is what it thinks it saw
-                self.confidenceLbl.text = "CONFIDENCE: \(Int(classification.confidence * 100))%" //.confidence shows the percentage; Int for the number to be a whole number
+                let identification = classification.identifier //identifier is what it thinks it saw
+                let confidence = Int(classification.confidence * 100) //.confidence shows the percentage; Int for the number to be a whole number
+                self.identificationLbl.text = identification //change the label text
+                self.confidenceLbl.text = "CONFIDENCE: \(confidence)%"
+                let completeSentence = "This looks like a \(identification) and I'm \(confidence) percent sure."
+                synthesizeSpeech(fromString: completeSentence) //speaks complete sentence
                 break
             }
         }
     }
     
-    
+    func synthesizeSpeech(fromString string: String) { //to turn text into an utterance the app can read it and speak it
+        let speechUtterance = AVSpeechUtterance(string: string) //pass in a string to read
+        speechSynthesizer.speak(speechUtterance) //pass in utterance for it to speak
+    }
     
     //delegate avcapture conforms to
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
@@ -146,6 +163,13 @@ class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
             flashControlState = .off
         }
     }
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) { //when app finishes speaking
+        self.cameraView.isUserInteractionEnabled = true //re-enable pictures
+        self.spinner.isHidden = true //spinner hides
+        self.spinner.stopAnimating()
+    }
+    
     
 }
 

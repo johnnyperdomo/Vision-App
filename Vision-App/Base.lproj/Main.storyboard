@@ -73,11 +73,17 @@
                                     <action selector="flashBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3Rv-af-L6k"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4Ee-hh-7cV">
+                                <rect key="frame" x="307" y="573" width="20" height="20"/>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Wsb-qf-ATc" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="2i3-Mc-f0L"/>
                             <constraint firstItem="Wsb-qf-ATc" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="8SS-0p-kBG"/>
+                            <constraint firstItem="4Ee-hh-7cV" firstAttribute="centerX" secondItem="Qw9-9n-e9n" secondAttribute="centerX" id="Btw-g2-N5A"/>
+                            <constraint firstItem="4Ee-hh-7cV" firstAttribute="centerY" secondItem="Qw9-9n-e9n" secondAttribute="centerY" id="ESm-G7-nfA"/>
                             <constraint firstItem="Wsb-qf-ATc" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="GNJ-Tl-Ym2"/>
                             <constraint firstItem="xoJ-4H-psq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="awy-3O-cxK"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Qw9-9n-e9n" secondAttribute="trailing" constant="20" id="c8A-Fj-xD8"/>
@@ -97,6 +103,7 @@
                         <outlet property="confidenceLbl" destination="MF5-cZ-T1L" id="o2j-0e-Pnn"/>
                         <outlet property="flashBtn" destination="wLw-ca-kav" id="lVi-bt-LOc"/>
                         <outlet property="identificationLbl" destination="e1n-LM-qCT" id="ath-sq-774"/>
+                        <outlet property="spinner" destination="4Ee-hh-7cV" id="Vly-Uz-kFo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
