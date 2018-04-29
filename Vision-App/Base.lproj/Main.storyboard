@@ -20,7 +20,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wsb-qf-ATc">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xoJ-4H-psq" customClass="RoundedShadowView" customModule="Vision_App" customModuleProvider="target">
                                 <rect key="frame" x="20" y="30" width="335" height="60"/>
@@ -69,6 +69,9 @@
                                 <state key="normal" title="FLASHOFF">
                                     <color key="titleColor" red="1" green="0.1647202153" blue="0.073939081860000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
+                                <connections>
+                                    <action selector="flashBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3Rv-af-L6k"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

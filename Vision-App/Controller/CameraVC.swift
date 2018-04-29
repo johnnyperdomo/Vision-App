@@ -11,6 +11,11 @@ import AVFoundation //lets us access camera, can process audio...
 import CoreML //handles overall machine learning stuff
 import Vision //handles things like face/object recognition
 
+enum FlashState { //state of the flashlight
+    case off
+    case on
+}
+
 class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
 
     var captureSession: AVCaptureSession! //control our real time capture of the camera
@@ -18,6 +23,8 @@ class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
     var previewLayer: AVCaptureVideoPreviewLayer! //added to backgroundView to show the camera
     
     var photoData: Data?
+    
+    var flashControlState: FlashState = .off //off by default
     
     @IBOutlet weak var cameraView: UIView!
     @IBOutlet weak var captureImageView: RoundedShadowImageView!
@@ -77,6 +84,12 @@ class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
         
         settings.previewPhotoFormat = settings.embeddedThumbnailPhotoFormat // sets it up for our photo to be previewSized, doesn't need to be full 1920 x 1080 size; thumbnail size
         
+        if flashControlState == .off { //if control state is off
+            settings.flashMode = .off //photosettings has a flash mode we can turn on or off
+        } else {
+            settings.flashMode = .on
+        }
+        
         cameraOutput.capturePhoto(with: settings, delegate: self) //it captures the image with settings and its own delegate
 
     }
@@ -123,6 +136,16 @@ class CameraVC: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
+    @IBAction func flashBtnPressed(_ sender: Any) { //when flash btn pressed
+        switch flashControlState { //to switch between states
+        case .off:
+            flashBtn.setTitle("FLASH ON", for: .normal)
+            flashControlState = .on
+        case .on:
+            flashBtn.setTitle("FLASH OFF", for: .normal)
+            flashControlState = .off
+        }
+    }
     
 }
 
