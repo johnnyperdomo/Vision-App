@@ -16,6 +16,7 @@
 		FE078E122092429E00F0AAB4 /* RoundedShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE078E112092429E00F0AAB4 /* RoundedShadowButton.swift */; };
 		FE078E14209242F700F0AAB4 /* RoundedShadowImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE078E13209242F700F0AAB4 /* RoundedShadowImageView.swift */; };
 		FE3A44552093E58E00422011 /* SqueezeNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = FE3A44542093E58E00422011 /* SqueezeNet.mlmodel */; };
+		FE3D55D720BB333C008DE31F /* ezgif.com-video-to-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = FE3D55D620BB333C008DE31F /* ezgif.com-video-to-gif.gif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		FE078E112092429E00F0AAB4 /* RoundedShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowButton.swift; sourceTree = "<group>"; };
 		FE078E13209242F700F0AAB4 /* RoundedShadowImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowImageView.swift; sourceTree = "<group>"; };
 		FE3A44542093E58E00422011 /* SqueezeNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = SqueezeNet.mlmodel; sourceTree = "<group>"; };
+		FE3D55D620BB333C008DE31F /* ezgif.com-video-to-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "ezgif.com-video-to-gif.gif"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		FE078DF920923CA100F0AAB4 /* Vision-App */ = {
 			isa = PBXGroup;
 			children = (
+				FE3D55D820BB335A008DE31F /* Videos */,
 				FE078E0E20923D0A00F0AAB4 /* Resources */,
 				FE078E0D20923D0300F0AAB4 /* View */,
 				FE078E0C20923CF400F0AAB4 /* Controller */,
@@ -98,6 +101,14 @@
 				FE3A44542093E58E00422011 /* SqueezeNet.mlmodel */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		FE3D55D820BB335A008DE31F /* Videos */ = {
+			isa = PBXGroup;
+			children = (
+				FE3D55D620BB333C008DE31F /* ezgif.com-video-to-gif.gif */,
+			);
+			path = Videos;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,6 +172,7 @@
 				FE078E0520923CA300F0AAB4 /* LaunchScreen.storyboard in Resources */,
 				FE078E0220923CA300F0AAB4 /* Assets.xcassets in Resources */,
 				FE078E0020923CA100F0AAB4 /* Main.storyboard in Resources */,
+				FE3D55D720BB333C008DE31F /* ezgif.com-video-to-gif.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
